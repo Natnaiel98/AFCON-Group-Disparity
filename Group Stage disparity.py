@@ -4,9 +4,6 @@ Created on Mon Jan 17 23:44:54 2022
 
 @author: natem
 """
-
-
-
 import io   
 import pandas as pd
 import numpy as np
@@ -20,6 +17,7 @@ years=['2009-12-16','2012-01-18','2013-01-17','2014-12-18','2017-01-12','2019-04
 mlinks=["".join (['https://www.transfermarkt.us/statistik/weltrangliste/statistik/stat/datum/',str(hh)]) for hh in years]
 #this section of the transfermarkt code will be iterated across all different years
 ttt=[i for i in range(len(rank),2)]
+
 #loop that produces link to all pages
 #iterating through different year Rankings
 all_years=[]
