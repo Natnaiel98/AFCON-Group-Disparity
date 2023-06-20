@@ -5,8 +5,6 @@ Created on Mon Jan 17 23:44:54 2022
 @author: natem
 """
 
-
-
 import io   
 import pandas as pd
 import numpy as np
@@ -17,10 +15,11 @@ import selenium
 import matplotlib.pyplot as plt
 
 
+#years to obtain the rankings for AFCON tournaments
 years=['2009-12-16','2012-01-18','2013-01-17','2014-12-18','2017-01-12','2019-04-04','2021-12-23']
 mlinks=["".join (['https://www.transfermarkt.us/statistik/weltrangliste/statistik/stat/datum/',str(hh)]) for hh in years]
 
-
+#function that obtain the transfermarkt National team ranking tables for the selected years
 def rank_tbl(x=years,y=mlinks):
     #this section of the transfermarkt code will be iterated across all different years
     #ttt=[i for i in range(len(rank),2)]
@@ -60,10 +59,12 @@ def rank_tbl(x=years,y=mlinks):
      fifarank=pd.DataFrame({'Team':tt,'Ranking':ll,'Points':points})   
      all_years.append(fifarank)
     return(all_years)
+
+
 all_years=rank_tbl(years,mlinks)
 
 
-#scraping group tables from wikpedia
+#obtaining the group tables from wikpedia
 links=['https://en.wikipedia.org/wiki/2010_Africa_Cup_of_Nations','https://en.wikipedia.org/wiki/2012_Africa_Cup_of_Nations',
        'https://en.wikipedia.org/wiki/2013_Africa_Cup_of_Nations','https://en.wikipedia.org/wiki/2015_Africa_Cup_of_Nations',
        'https://en.wikipedia.org/wiki/2017_Africa_Cup_of_Nations','https://en.wikipedia.org/wiki/2019_Africa_Cup_of_Nations',
@@ -73,7 +74,6 @@ links=['https://en.wikipedia.org/wiki/2010_Africa_Cup_of_Nations','https://en.wi
 #design: for link in links : read all of the links 
 #current solution, create list that will be appended for every season 
 #list containing links is seperated on the year that the tournament took place
-
 def AFCON_Tables(r=0):
     for mlink in mlinks:
      total=[]   
@@ -93,6 +93,7 @@ def AFCON_Tables(r=0):
         for i in fin:
             if i.shape==(4, 11) or i.shape==(4,9):
                 i = i.rename(columns={'Team.mw-parser-output .navbar{display:inline;font-size:88%;font-weight:normal}.mw-parser-output .navbar-collapse{float:left;text-align:left}.mw-parser-output .navbar-boxtext{word-spacing:0}.mw-parser-output .navbar ul{display:inline-block;white-space:nowrap;line-height:inherit}.mw-parser-output .navbar-brackets::before{margin-right:-0.125em;content:"[ "}.mw-parser-output .navbar-brackets::after{margin-left:-0.125em;content:" ]"}.mw-parser-output .navbar li{word-spacing:-0.125em}.mw-parser-output .navbar a>span,.mw-parser-output .navbar a>abbr{text-decoration:inherit}.mw-parser-output .navbar-mini abbr{font-variant:small-caps;border-bottom:none;text-decoration:none;cursor:inherit}.mw-parser-output .navbar-ct-full{font-size:114%;margin:0 7em}.mw-parser-output .navbar-ct-mini{font-size:114%;margin:0 4em}vte':'Team'})
+                i= i.rename(columns={'Team.mw-parser-output .hlist dl,.mw-parser-output .hlist ol,.mw-parser-output .hlist ul{margin:0;padding:0}.mw-parser-output .hlist dd,.mw-parser-output .hlist dt,.mw-parser-output .hlist li{margin:0;display:inline}.mw-parser-output .hlist.inline,.mw-parser-output .hlist.inline dl,.mw-parser-output .hlist.inline ol,.mw-parser-output .hlist.inline ul,.mw-parser-output .hlist dl dl,.mw-parser-output .hlist dl ol,.mw-parser-output .hlist dl ul,.mw-parser-output .hlist ol dl,.mw-parser-output .hlist ol ol,.mw-parser-output .hlist ol ul,.mw-parser-output .hlist ul dl,.mw-parser-output .hlist ul ol,.mw-parser-output .hlist ul ul{display:inline}.mw-parser-output .hlist .mw-empty-li{display:none}.mw-parser-output .hlist dt::after{content:": "}.mw-parser-output .hlist dd::after,.mw-parser-output .hlist li::after{content:" · ";font-weight:bold}.mw-parser-output .hlist dd:last-child::after,.mw-parser-output .hlist dt:last-child::after,.mw-parser-output .hlist li:last-child::after{content:none}.mw-parser-output .hlist dd dd:first-child::before,.mw-parser-output .hlist dd dt:first-child::before,.mw-parser-output .hlist dd li:first-child::before,.mw-parser-output .hlist dt dd:first-child::before,.mw-parser-output .hlist dt dt:first-child::before,.mw-parser-output .hlist dt li:first-child::before,.mw-parser-output .hlist li dd:first-child::before,.mw-parser-output .hlist li dt:first-child::before,.mw-parser-output .hlist li li:first-child::before{content:" (";font-weight:normal}.mw-parser-output .hlist dd dd:last-child::after,.mw-parser-output .hlist dd dt:last-child::after,.mw-parser-output .hlist dd li:last-child::after,.mw-parser-output .hlist dt dd:last-child::after,.mw-parser-output .hlist dt dt:last-child::after,.mw-parser-output .hlist dt li:last-child::after,.mw-parser-output .hlist li dd:last-child::after,.mw-parser-output .hlist li dt:last-child::after,.mw-parser-output .hlist li li:last-child::after{content:")";font-weight:normal}.mw-parser-output .hlist ol{counter-reset:listitem}.mw-parser-output .hlist ol>li{counter-increment:listitem}.mw-parser-output .hlist ol>li::before{content:" "counter(listitem)"\\a0 "}.mw-parser-output .hlist dd ol>li:first-child::before,.mw-parser-output .hlist dt ol>li:first-child::before,.mw-parser-output .hlist li ol>li:first-child::before{content:" ("counter(listitem)"\\a0 "}.mw-parser-output .navbar{display:inline;font-size:88%;font-weight:normal}.mw-parser-output .navbar-collapse{float:left;text-align:left}.mw-parser-output .navbar-boxtext{word-spacing:0}.mw-parser-output .navbar ul{display:inline-block;white-space:nowrap;line-height:inherit}.mw-parser-output .navbar-brackets::before{margin-right:-0.125em;content:"[ "}.mw-parser-output .navbar-brackets::after{margin-left:-0.125em;content:" ]"}.mw-parser-output .navbar li{word-spacing:-0.125em}.mw-parser-output .navbar a>span,.mw-parser-output .navbar a>abbr{text-decoration:inherit}.mw-parser-output .navbar-mini abbr{font-variant:small-caps;border-bottom:none;text-decoration:none;cursor:inherit}.mw-parser-output .navbar-ct-full{font-size:114%;margin:0 7em}.mw-parser-output .navbar-ct-mini{font-size:114%;margin:0 4em}vte':'Team'})
                 i = i.rename(columns={'Teamvte':'Team'})
                 Groups.append(i)
         total.append(Groups)
@@ -101,7 +102,7 @@ def AFCON_Tables(r=0):
 lll=AFCON_Tables()
 
 
-#NEXT: ADD RANK TO EACH TEAM
+#NEXT: initializing the RANK for EACH TEAM
 def zero(x):
  for tour in lll:
     for group in tour:
@@ -110,6 +111,9 @@ def zero(x):
 
 total=zero(lll)
 
+for yr in range(len(total)):
+       for grp in range(len(total[yr])):
+                print(total[yr][grp].columns.values.tolist())
 
 #Function that takes a list of dataframes as input and normalizes team name for each AFCON Team
 # Before adding a new column with their FIFA world ranking from our obtained from all_years function
@@ -130,6 +134,7 @@ def add_rank(gg):
             # print(int(all_years[tourn]['Ranking'][jjj]))
             total[yr][grp]['Ranking'][tm]=int(all_years[tourn]['Ranking'][jjj]) 
  return(total) 
+
 total=add_rank(zero(lll))
 
 
@@ -137,7 +142,6 @@ total=add_rank(zero(lll))
 #average functions
 #for each group
 #sort each group by their fifa rankings to look at pot 3 and pot 4 teams
-
 
 def rank_dif (total,all_years):
  trn_dif=[]
@@ -165,6 +169,8 @@ def rank_dif (total,all_years):
  
  return (trn_dif,avg_ran)
 
+
+trn_dif,avg_ran=rank_dif (total,all_years)
 kkk=rank_dif (total,all_years)
 
 #find avg d/nce for each year:
