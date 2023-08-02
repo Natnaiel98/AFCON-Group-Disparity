@@ -4,15 +4,21 @@ Created on Mon Jan 17 23:44:54 2022
 
 @author: natem
 """
-
 import io   
 import pandas as pd
 import numpy as np
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 import selenium
 import matplotlib.pyplot as plt
+import scipy
+import ipython
+import sympy
+import nose
+import seaborn
+import matplotlib as mpl
+
+    
 
 
 #years to obtain the rankings for AFCON tournaments
@@ -183,24 +189,116 @@ for tr in trn_dif:
 print(np.mean(trn_dif))
 
 
-#GRAPHING SECTION
+##################################GRAPHING SECTION
+####################################
+
+#group names 
 G2021=['A','B','C','D','E','F']
 
-#bar plot for the average ranking for each group in 2021 AFCON
-  
-plt.bar(G2021,avg_ran[6])
-plt.title('Avg Fifa Rank of each AFCON 2021 Group')
-plt.xlabel('Group')
-plt.ylabel('Average Rank of each group')
-plt.show()  
+
+#create new df for Graphing purposes
+df = pd.DataFrame({'Group':G2021, 'Average Strength':avg_ran[6]})
 
 
+def AFCON_Bar_Plot(dataframe,font, labelcolor, figurecolor,title,xlabel):
+    #First, sort data for plotting to create a descending bar chart:          
+    dataframe.sort_values(by='Average Strength', inplace=True, ascending=True)
+    
+    #setting up the variables for graphing
+    # Variables
+    index = dataframe['Group'] 
+    values = dataframe['Average Strength']
+    plot_title =title #'Average Fifa Rank of Each AFCON 2021 Group'
+    title_size = 20
+    font= {'family':font}
+    x_label = xlabel#'Average Rank of Each Group'
+    y_label='Group'
+    
+    #Drawing the figure for the plot (viridis color)
+    fig, ax = plt.subplots(figsize=(10,6), facecolor = figurecolor)
+    mpl.pyplot.viridis()
+    
+    
+    #creating and formating the horizontal bar chart
+    bar = ax.barh(index, values)
+    plt.tight_layout()
+    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:,.0f}'))
+        
+    
+    
+    #setting the title of the graph        
+    title = plt.title(plot_title, pad=10, fontdict=font,fontsize=title_size, color=labelcolor)
+    title.set_position([.50, 1])
+    plt.subplots_adjust(top=0.9, bottom=0.1)
+    
+    
+    
+    #formatting the appearance of the barchart
+    ax.grid(zorder=0)
+    def gradientbars(bars):
+        grad = np.atleast_2d(np.linspace(0,1,256))
+        ax = bars[0].axes
+        lim = ax.get_xlim()+ax.get_ylim()
+        for bar in bars:
+            bar.set_zorder(1)
+            bar.set_facecolor('none')
+            x,y = bar.get_xy()
+            w, h = bar.get_width(), bar.get_height()
+            ax.imshow(grad, extent=[x+w, x, y, y+h], aspect='auto', zorder=1)
+        ax.axis(lim)
+    gradientbars(bar)
+    
+    
+    rects = ax.patches
+    # Place a label for each bar
+    for rect in rects:
+        # Get X and Y placement of label from rect
+        x_value = rect.get_width()
+        y_value = rect.get_y() + rect.get_height() / 2
+    
+        # Number of points between bar and label; change to your liking
+        space = -30
+        # Vertical alignment for positive values
+        ha = 'left'
+    
+        # If value of bar is negative: place label to the left of the bar
+        if x_value < 0:
+            # Invert space to place label to the left
+            space *= -1
+            # Horizontally align label to the right
+            ha = 'right'
+    
+        # Use X value as label and format number
+        label = '{:,.0f}'.format(x_value)
+    
+        # Create annotation
+        plt.annotate(
+            label,                      # Use `label` as label
+            (x_value, y_value),         # Place label at bar end
+            xytext=(space, 0),          # Horizontally shift label by `space`
+            textcoords='offset points', # Interpret `xytext` as offset in points
+            va='center',                # Vertically center label
+            ha=ha,                      # Horizontally align label differently for positive and negative values
+            color = 'white')            # Change label color to white
+        
+    
+    #hidding the Gridlines
+    plt.grid(False)
+    
+    #Setting the Background color of the plot
+    # Background color
+    ax.set_facecolor(figurecolor)
+    
+    
+    #Setting the x and y labels
+    ax.set_xlabel(x_label, fontsize = 17, fontdict=font, color=labelcolor)
+    ax.set_ylabel(y_label, fontsize = 17, fontdict=font, color=labelcolor)
+
+AFCON_Bar_Plot(df,'serif', 'Black', 'Lavender','Average FIFA Rank of Each AFCON 2021 Group','Average Rank of Each Group')
+
+#Creating second dataframe for Analysis of the difference in ranking between third and fourth seeded teams
+df2= pd.DataFrame({'Group':G2021, 'Average Strength':trn_dif[6]})
 
 
- #Graph d/nce between 3rd and 4th pot in each group for 2021
-  
-plt.bar(G2021,trn_dif[6])
-plt.title('Fifa Ranking differences between third and fourth pot teams')
-plt.xlabel('Group')
-plt.ylabel('Difference in Fifa Rankings(Pot 4- Pot 3)')
-plt.show()
+#Utilizing the Barplot function to visualize the difference between 3rd and 4th pot in each group for 2021 AFCON
+AFCON_Bar_Plot(df2,'serif', 'Black', 'Lavender','Difference in FIFA Ranking Between Third and Fourth Pot Teams','Difference in Fifa Rank(Pot 4-Pot 3)')
